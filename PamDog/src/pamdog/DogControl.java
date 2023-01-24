@@ -451,6 +451,16 @@ public class DogControl extends SwingWorker<Integer, ControlMessage> {
 		// since the PC is about to be restarted, force immediate saving of the params
 		configSettings.saveConfig(dogParams);
 		
+		
+		if (System.getProperty("os.name").startsWith("Linux")) {
+			commandLog.logItem("Shutting Down");
+			boolean exeRan = linuxReboot();
+			if(exeRan) {
+				quitDog();
+
+			}
+			return exeRan;
+		 }
 		String cmd = "shutdown -r -f";
 		commandLog.logItem(cmd);
 		try {
